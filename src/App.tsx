@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+import "./App.css";
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface Employee {
+  id: number;
+  name: string;
+  email: string;
 }
 
-export default App
+function App() {
+  const [employees, setEmployees] = useState<Employee[]>([]);
+
+  useEffect(() => {
+    async function fetchEmployees() {
+      try {
+        const response = await fetch("http://3.26.129.230:3000/employees");
+        const data: Employee[] = await response.json();
+        setEmployees(data);
+      } catch (error) {
+        console.error("Error fetching employees:", error);
+      }
+    }
+
+    fetchEmployees();
+  }, []);
+
+  return (
+    <div>
+      <h1>Employee List</h1>
+      <ul>
+        {employees.map((employee) => (
+          <li key={employee.id}>
+            {employee.name} - {employee.email}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default App;
