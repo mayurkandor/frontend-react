@@ -14,7 +14,7 @@ function App() {
   useEffect(() => {
     async function fetchEmployees() {
       try {
-        const response = await fetch("http://3.26.129.230:3000/employees");
+        const response = await fetch("http://13.210.238.173:3000/employees");
         const data: Employee[] = await response.json();
         setEmployees(data);
       } catch (error) {
